@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'mobx-react';
 import * as stores from './common/stores';
 import App from './App';
+import './setup';
 
 const Application = () => (
     <Provider {...stores}>

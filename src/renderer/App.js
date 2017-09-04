@@ -6,6 +6,7 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 import Editor from './components/editor';
+import Sidebar from './components/sidebar';
 import './App.css';
 import DevTools from 'mobx-react-devtools';
 
@@ -22,6 +23,7 @@ export default class App extends React.Component {
         return (
             <div className='App'>
                 <div className="body" style={this.style}>
+                    <Sidebar/>
                     <Editor/>
                 </div>
                 <DevTools />

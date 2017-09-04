@@ -1,0 +1,12 @@
+.Sidebar {
+    display: flex;
+    flew-direction: row;
+    height: inherit;
+    width: auto;
+}
+
+.Sidebar .container {
+    background-color: #252526;
+    min-width: 150px;
+    width: 200px;
+}

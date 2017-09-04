@@ -6,9 +6,13 @@
 
 import React from 'react';
 import {inject, observer} from 'mobx-react';
+import * as Action from '../../common/actions';
 import TextEditor from '../textEditor';
+import FileTab from '../fileTab';
 import './styles.css'
 
+@inject('fileBuffer')
+@observer
 export default class Editor extends React.Component {
     state = {
         body: {
@@ -22,6 +26,8 @@ export default class Editor extends React.Component {
             this.updateDimensions();
         });
         this.updateDimensions();
+
+        // Action.viewCode(__filename);
     }
 
     updateDimensions() {
@@ -31,11 +37,22 @@ export default class Editor extends React.Component {
         this.setState({ body: { width, height } });
     }
 
+    renderOpenedFileTabs() {
+        const { fileBuffer } = this.props;
+        if (fileBuffer.fileStates.length === 0) return null;
+        return (
+            <div className="editorTabs">
+                {fileBuffer.fileStates.map((file, key) => <FileTab key={key} {...file} onClick={this.onClickTab} />)}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="Editor" ref="editor">
                 <div className="editorView">
-                    <TextEditor></TextEditor>
+                    {this.renderOpenedFileTabs()}
+                    <TextEditor ref={Action.setEditorHandler} {...this.state} ></TextEditor>
                 </div>
             </div>
         );

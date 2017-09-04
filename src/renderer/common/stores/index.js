@@ -4,5 +4,7 @@
  */
 
 import view from './view';
+import fileBuffer from './fileBuffer';
+import project from './project';
 
-export { view };
+export {view, fileBuffer, project};
