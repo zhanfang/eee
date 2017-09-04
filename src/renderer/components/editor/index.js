@@ -7,6 +7,7 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 import TextEditor from '../textEditor';
+import './styles.css'
 
 export default class Editor extends React.Component {
     state = {

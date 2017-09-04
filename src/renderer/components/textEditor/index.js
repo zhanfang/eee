@@ -1,10 +1,11 @@
 import React from 'react';
-//import MonacoEditor from 'react-monaco-editor'; // Reference: https://github.com/superRaytin/react-monaco-editor
+import MonacoEditor from '../../lib/react-monaco-editor'; // Reference: https://github.com/superRaytin/react-monaco-editor
+import './styles.css'
 
 export default class TextEditor extends React.Component {
     state = {
-        value: '',
-        language: '',
+        value: 'test',
+        language: 'javascript',
         editor: null
     };
 
@@ -32,7 +33,12 @@ export default class TextEditor extends React.Component {
     render() {
         return (
             <div className="TextEditor">
-
+                <MonacoEditor
+                    {...this.state}
+                    options={this.options}
+                    onChange={(value) => this.setState({ value })}
+                    editorDidMount={(editor, monaco) => this.editorDidMount(editor, monaco)}
+                />
             </div>
         );
     }
