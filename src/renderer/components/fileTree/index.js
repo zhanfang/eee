@@ -5,6 +5,10 @@
 'use strict'
 
 import React from 'react'
+import Icon from '../icon';
+import ItemFile from './file';
+import ItemFolder from './folder';
+import './styles.css';
 
 export default class FileTree extends React.Component {
     state = {
@@ -18,6 +22,59 @@ export default class FileTree extends React.Component {
     get iconName() {
         return (this.state.collapsed) ? 'chevron-right' : 'chevron-down';
     }
+
+    get projectName() {
+        const {title} = this.props;
+        return (title.length > this.limitText) ? `${title.slice(0, this.limitText)}...` : title;
+    }
+
+    renderFile = (item) => (
+        <ItemFile
+            {...item}
+            key={`${item.path}-${Math.random()}`}
+            onClick={this.props.onClickNode} 
+        />
+    );
+    
+    componentWillMount() {
+        const { content: { files, folders } } = this.props;
+        this.setState({ files, folders });
+    }
+    
+    componentWillReceiveProps({ content: { files, folders } }) {
+        this.setState({ files, folders });
+    }
+
+    collapseAll() {
+        const collapsed = true;
+        this.setState({ collapsed }, () => this.setState({ collapsed: !collapsed }));
+    }
+
+    createNewElement = (path, type = 'newfile') => {
+        const element = (this.props.path === path) ? this : this.childFolders[path];
+        element.createElement(type);
+    }
+    
+    createElement(type) {
+        const { path } = this.props;
+        const { files } = this.state;
+        files.push({ type, path });
+        this.setState({ files });
+    }
+
+    onRenderChild = (childPath, obj) => {
+        this.childFolders[childPath] = obj;
+    }
+        
+    renderFolder = (item) => (
+        <ItemFolder
+            {...item}
+            key={`${item.path}-${Math.random()}`}
+            onClick={this.props.onClickNode}
+            onRenderChild={this.onRenderChild}
+            ref={ref => this.onRenderChild(item.path, ref)}
+        />
+    );
 
     renderFileTree(visible) {
         const { files, folders } = this.state;
@@ -43,6 +100,7 @@ export default class FileTree extends React.Component {
                         <Icon name="collapse" className="icon" onClick={() => this.collapseAll()} />
                     </div>
                 </div>
+                {this.renderFileTree(!this.state.collapsed)}
             </div>
         );
     }

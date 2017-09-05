@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import FileTree from '../fileTree';
-import './styles.css';
 import * as Action from '../../common/actions';
 import {logger} from '../../common/utils';
+import './styles.css';
 
 @inject('project')
 @observer

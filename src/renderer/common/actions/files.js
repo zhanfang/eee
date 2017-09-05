@@ -10,6 +10,8 @@ let fileTreeHandler = null;
  */
 export const setFileTreeHandler = (ref) => fileTreeHandler = ref;
 
+export const readProjectFiles = () => {};
+
 export const loadFile = ({ path }) => (fileBuffer.exists(path)) ?
     Action.viewCode(path) : Writer.readFile({ path });
 
