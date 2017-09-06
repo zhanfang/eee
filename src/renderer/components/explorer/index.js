@@ -10,8 +10,8 @@ import './styles.css';
 export default class Explorer extends React.Component {
 
     // 此处获取读取文件目录路径，并获取project相关信息
-    componentWillMount() {
-        logger(__dirname);
+    componentWillMount() {;
+        Action.readProjectFiles();
     }
 
     onClickNode(node) {

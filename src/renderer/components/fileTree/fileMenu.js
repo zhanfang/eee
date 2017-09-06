@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Action from 'common/actions';
+import * as Action from '../../common/actions';
 import './styles.css';
 
 export default class FileMenu extends React.Component {

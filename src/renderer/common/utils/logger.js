@@ -1,3 +1,5 @@
 import debug from 'debug';
 
-export const logger = debug('log');
+const logger = debug('log');
+
+export {logger};

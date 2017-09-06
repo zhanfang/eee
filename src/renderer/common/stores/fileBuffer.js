@@ -2,60 +2,89 @@
  * @file 文件信息状态管理
  * @author zhanfang(fzhanxd@gmail.com)
  */
-'use strict'
+'use strict';
 
-import * as mobx from 'mobx';
-
-mobx.useStrict(true);
-
-const { action, computed, observable } = mobx;
+import {
+    action,
+    computed,
+    observable
+} from 'mobx';
 
 let indexes = {};
 
+const updateIndexes = (files) => indexes = files.reduce((prev, next, i) => {
+    prev[next.path] = i;
+    return prev;
+}, {});
+
 class FileBufferStore {
+
     @observable loading = false;
+
     @observable openedFiles = [];
+
     @observable activeFilePath = '';
 
     previousFilePaths = [];
 
-    @computed get activeFile() {
+    @computed
+    get activeFile() {
         const position = indexes[this.activeFilePath];
         return this.openedFiles[position];
     }
 
-    @computed get fileStates() {
-        return this.openedFiles.map(
-            ({ name, path }) => ({ name, path, active: path === this.activeFilePath }));
+    @computed
+    get nextFile() {
+        const position = (indexes[this.activeFilePath] + 1) % this.openedFiles.length;
+        return this.openedFiles[position];
     }
 
-    @action isLoading(state) {
+    @computed
+    get previousFile() {
+        const position = indexes[this.activeFilePath] - 1;
+        return (position > -1) ? this.openedFiles[position] : this.openedFiles[this.openedFiles.length - 1];
+    }
+
+    @computed
+    get fileStates() {
+        return this.openedFiles.map(({name, path}) => ({name, path, active: path === this.activeFilePath}));
+    }
+
+    @action
+    isLoading(state) {
         this.loading = Boolean(state);
     }
 
-    @action selectFile(filePath) {
+    @action
+    selectFile(filePath) {
         if (this.activeFilePath) {
             this.previousFilePaths.push(this.activeFilePath);
         }
-        this.activeFile = filePath;
+
+        this.activeFilePath = filePath;
     }
 
-    @action addToBuffer(file) {
+    @action
+    addToBuffer(file) {
         const position = this.openedFiles.length;
         this.openedFiles.push(file);
         indexes[file.path] = position;
     }
 
-    @action close(filePath) {
+    @action
+    close(filePath) {
         this.previousFilePaths = this.previousFilePaths.filter(item => item !== filePath);
-        if (this.activeFilePath === filePath) this.activeFilePath = '';
+        if (this.activeFilePath === filePath) {
+            this.activeFilePath = '';
+        }
+
         const position = indexes[filePath];
         this.openedFiles.splice(position, 1);
         delete indexes[filePath];
         updateIndexes(this.openedFiles);
     }
 
-    exists (filePath) {
+    exists(filePath) {
         return !isNaN(indexes[filePath]);
     }
 
@@ -67,6 +96,6 @@ class FileBufferStore {
         const position = indexes[filePath];
         this.openedFiles[position].content = code;
     }
-}
 
+}
 export default new FileBufferStore();

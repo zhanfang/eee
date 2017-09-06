@@ -1,5 +1,6 @@
 import * as Action from '../actions';
 import { project, fileBuffer } from '../stores';
+import {readProjectFilesServer, readFile} from '../utils';
 
 let fileTreeHandler = null;
 
@@ -10,10 +11,18 @@ let fileTreeHandler = null;
  */
 export const setFileTreeHandler = (ref) => fileTreeHandler = ref;
 
-export const readProjectFiles = () => {};
+export const readProjectFiles = (srcPath) => {
+    const files = readProjectFilesServer(srcPath);
+    project.load(files);
+}
 
-export const loadFile = ({ path }) => (fileBuffer.exists(path)) ?
-    Action.viewCode(path) : Writer.readFile({ path });
+export const loadFile = ({ path }) => {
+    const file = (fileBuffer.exists(path)) 
+        ? Action.viewCode(path)
+        : readFile(path);
+    fileBuffer.addToBuffer(file);
+    Action.viewCode(file.path);
+}
 
 export const closeFile = (filePath) => {
     if (fileBuffer.activeFilePath === filePath) {

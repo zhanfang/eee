@@ -7,13 +7,15 @@
 import React from 'react';
 import MonacoEditor from '../../lib/react-monaco-editor'; // Reference: https://github.com/superRaytin/react-monaco-editor
 import './styles.css'
-import fs from 'fs';
+import {logger} from '../../common/utils';
 
 export default class TextEditor extends React.Component {
     state = {
         value: '',
         language: ''
     };
+
+    editor = null;
 
     options = {
         minimap: {
@@ -34,14 +36,13 @@ export default class TextEditor extends React.Component {
     editorDidMount(editor, monaco) {
         editor.focus();
         this.editor = editor;
-        let f = fs.readFileSync('/Users/zhan/Documents/code/electron-react-startkit/src/index.ejs');
-        this.loadCode(f.toString(), 'javascript');
     }
 
     loadCode(value, language) {
         const { body } = this.props;
         this.setState({ value, language });
         this.editor.layout(body);
+        logger(body);
     }
 
     render() {

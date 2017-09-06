@@ -17,6 +17,8 @@ export default class FileTree extends React.Component {
         folders: []
     }
 
+    childFolders = {};
+
     limitText = 20;
 
     get iconName() {
