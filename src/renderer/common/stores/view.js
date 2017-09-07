@@ -3,7 +3,10 @@
  * @author zhanfang(fzhanxd@gmail.com)
  */
 
-import { action, computed, observable } from 'mobx'; 
+import { action, computed, observable, useStrict } from 'mobx'; 
+
+useStrict(true);
+
 /**
  * ViewStore is the Mobx global data storage for the view data.
  * @class ViewStore

@@ -42,7 +42,13 @@ export default class TextEditor extends React.Component {
         const { body } = this.props;
         this.setState({ value, language });
         this.editor.layout(body);
-        logger(body);
+    }
+
+    setLayout() {
+        const { body } = this.props;
+        if (this.editor) {
+            this.editor.layout(body);
+        }
     }
 
     render() {

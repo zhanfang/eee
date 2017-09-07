@@ -29,3 +29,5 @@ export const viewCode = (filePath) => {
 export const cleanCode = () => editorHandler.loadCode('', '');
 
 export const getCode = () => editorHandler.code;
+
+export const setLayout = () => editorHandler.setLayout();

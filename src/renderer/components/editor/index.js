@@ -26,15 +26,17 @@ export default class Editor extends React.Component {
             this.updateDimensions();
         });
         this.updateDimensions();
-
-        // Action.viewCode(__filename);
     }
 
     updateDimensions() {
         const { clientHeight, clientWidth } = this.refs.editor;
         const width = clientWidth;
         const height = clientHeight - 36;
+        
+        // 设置texteditor属性
         this.setState({ body: { width, height } });
+        // 设置monaco的宽高
+        Action.setLayout();
     }
 
     renderOpenedFileTabs() {

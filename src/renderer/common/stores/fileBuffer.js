@@ -7,8 +7,11 @@
 import {
     action,
     computed,
-    observable
+    observable,
+    useStrict
 } from 'mobx';
+
+useStrict(true);
 
 let indexes = {};
 

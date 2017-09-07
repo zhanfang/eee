@@ -28,7 +28,7 @@ const readDir = (srcPath, folders = []) => {
     return { name: dirName, path: srcPath, files, folders };
 }
 
-const readProjectFilesServer = (srcPath = '/Users/zhan/Documents/code/vscode/wcode') => {
+const readProjectFilesServer = (srcPath) => {
     try {
         const path = resolve(srcPath);
         if (!checkPath(path).isDirectory()) {

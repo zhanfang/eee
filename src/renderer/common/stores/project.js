@@ -4,9 +4,14 @@
  */
 'use strict'
 
-import { action, observable } from 'mobx';
+import { action, observable, useStrict } from 'mobx';
+
+useStrict(true);
 
 class ProjectStore {
+
+    // 文件夹的根路径
+    @observable rootPath = ''
     
     @observable loading = false;
     
@@ -15,6 +20,10 @@ class ProjectStore {
     @observable path = '';
     
     @observable content = {};
+
+    @action setRootPath(path) {
+        this.rootPath = path;
+    }
 
     @action isLoading(state) {
         this.loading = Boolean(state);
