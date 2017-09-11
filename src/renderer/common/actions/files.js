@@ -1,6 +1,20 @@
+/**
+ * @file 文件及文件夹相关操作
+ * @author zhanfang(fzhanxd@gmail.com)
+ */
+
 import * as Action from '../actions';
-import { project, fileBuffer } from '../stores';
-import {readProjectFilesServer, readFile, createFile, deleteFileServer} from '../utils';
+import {project, fileBuffer} from '../stores';
+import {
+    readProjectFilesServer
+    , readFile
+    , createFile
+    , deleteFileServer
+    , updateFileServer
+    , createDirectoryServer
+    , updateDirectoryServer
+    , deleteDirectoryServer
+} from '../utils';
 
 let fileTreeHandler = null;
 
@@ -66,7 +80,10 @@ export const triggerNewFile = (path = '') => {
     fileTreeHandler.createNewElement(path);
 };
 
-export const createNewDirectory = (path) => Writer.createDirectory({ path });
+export const createNewDirectory = (path) => {
+    createDirectoryServer({ path });
+    Action.readProjectFiles();
+}
 
 export const triggerNewDirectory = (path = '') => {
     if (!path) {
@@ -77,16 +94,19 @@ export const triggerNewDirectory = (path = '') => {
             path = path.join('/');
         }
     }
-    fileTreeHandler.createNewElement(path, 'newdirectory');
+    fileTreeHandler.createNewElement(path);
 };
 
-export const deleteDirectory = (directory) => Writer.deleteDirectory(directory);
+export const deleteDirectory = (directory) => {
+    deleteDirectoryServer(directory);
+    Action.readProjectFiles();
+}
 
 export const saveFile = () => {
     const activeFile = fileBuffer.activeFile;
     if (!activeFile) return;
     const content = Action.getCode();
-    Writer.updateFile({ ...activeFile, content });
+    updateFileServer({ ...activeFile, content });
 };
 
 export const saveAllFiles = () => fileBuffer.openedFiles.map(file => saveFile(file));

@@ -5,6 +5,7 @@
 'use strict'
 import fs from 'fs';
 import mime from 'mime';
+import rimraf from 'rimraf';
 import {resolve} from 'path';
 import {logger} from './logger';
 
@@ -65,7 +66,7 @@ const createFile = (payload) => {
     try {
         const path = payload.path;
         if (fs.existsSync(path)) throw new Error('A file with this name already exists.');
-        const content = '';
+        const content = ' ';
         fs.appendFileSync(path, content);
         const result = {
             name: path.split('/').pop(),
@@ -78,6 +79,22 @@ const createFile = (payload) => {
         
         return result;
     } catch (e) {
+        logger(e);
+    }
+};
+
+const updateFileServer = (payload) => {
+    try {
+        const { content, path } = payload.file;
+        
+        if (!checkPath(path).isFile()) throw new Error('The given path is not a file.');
+        
+        fs.writeFileSync(path, content);
+
+        logger('updteFileServer', path);
+        
+        return path;
+    } catch(e) {
         logger(e);
     }
 };
@@ -95,4 +112,61 @@ const deleteFileServer = (payload) => {
     }
 };
 
-export {readProjectFilesServer, readFile, createFile, deleteFileServer};
+const createDirectoryServer = (payload) => {
+    try {
+        const { path } = payload.directory;
+
+        if (fs.existsSync(path)) throw new Error('A directory with this name already exists.');
+        fs.mkdirSync(path);
+
+        const result = {
+            name: path.split('/').pop(),
+            path,
+            files: [],
+            folders: []
+        };
+
+        logger('createDirectoryServer', result);
+        return result;
+    } catch (e) {
+        logger(e)
+    }
+};
+
+const updateDirectoryServer = (payload) => {
+    try {
+        const { content, path } = payload.directory;
+        
+        if (!checkPath(path).isDirectory()) throw new Error('The given path is not a directory.');
+        
+        throw new Error('Operation not implemented.');
+    } catch(e) {
+        logger(e);
+    }
+};
+
+const deleteDirectoryServer = (payload) => {
+    try {
+        const { path } = payload.directory;
+        
+        if (!checkPath(path).isDirectory()) throw new Error('The given path does not exist or is not a directory.');
+        
+        rimraf(path, () => {
+            logger('deleteDirectoryServer', path);
+            return path;
+        });
+    } catch (e) {
+        logger(e);
+    }
+};
+
+export {
+    readProjectFilesServer
+    , readFile
+    , createFile
+    , updateFileServer
+    , deleteFileServer
+    , createDirectoryServer
+    , updateDirectoryServer
+    , deleteDirectoryServer
+};
