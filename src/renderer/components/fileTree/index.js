@@ -8,6 +8,7 @@ import React from 'react'
 import Icon from '../icon';
 import ItemFile from './file';
 import ItemFolder from './folder';
+import * as Action from '../../common/actions';
 import './styles.css';
 
 export default class FileTree extends React.Component {
@@ -29,14 +30,6 @@ export default class FileTree extends React.Component {
         const {title} = this.props;
         return (title.length > this.limitText) ? `${title.slice(0, this.limitText)}...` : title;
     }
-
-    renderFile = (item) => (
-        <ItemFile
-            {...item}
-            key={`${item.path}-${Math.random()}`}
-            onClick={this.props.onClickNode} 
-        />
-    );
     
     componentWillMount() {
         const { content: { files, folders } } = this.props;
@@ -64,6 +57,14 @@ export default class FileTree extends React.Component {
         this.setState({ files });
     }
 
+    renderFile = (item) => (
+        <ItemFile
+            {...item}
+            key={`${item.path}-${Math.random()}`}
+            onClick={this.props.onClickNode} 
+        />
+    );
+
     onRenderChild = (childPath, obj) => {
         this.childFolders[childPath] = obj;
     }
@@ -80,6 +81,7 @@ export default class FileTree extends React.Component {
 
     renderFileTree(visible) {
         const { files, folders } = this.state;
+        console.log(this.state);
         return (
             <div className={`rootContent subnodes no-padding ${visible && 'visible'}`}>
                 {[].concat(folders.map(this.renderFolder)).concat(files.map(this.renderFile))}

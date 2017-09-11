@@ -1,6 +1,6 @@
 import * as Action from '../actions';
 import { project, fileBuffer } from '../stores';
-import {readProjectFilesServer, readFile} from '../utils';
+import {readProjectFilesServer, readFile, createFile, deleteFileServer} from '../utils';
 
 let fileTreeHandler = null;
 
@@ -11,8 +11,9 @@ let fileTreeHandler = null;
  */
 export const setFileTreeHandler = (ref) => fileTreeHandler = ref;
 
-export const readProjectFiles = (srcPath) => {
-    const files = readProjectFilesServer(srcPath);
+export const readProjectFiles = () => {
+    const rootPath = project.rootPath;
+    const files = readProjectFilesServer(rootPath);
     project.load(files);
 }
 
@@ -40,9 +41,18 @@ export const closeCurrentFile = () => {
 
 export const closeAllFiles = () => fileBuffer.fileStates.map(({ path }) => closeFile(path));
 
-export const createNewFile = (path) => Writer.createFile({ path });
+export const createNewFile = (path) => {
+    const file = createFile({ path });
+    Action.readProjectFiles();
+    fileBuffer.addToBuffer(file);
+    Action.viewCode(file.path);
+}
 
-export const deleteFile = (file) => Writer.deleteFile(file);
+export const deleteFile = (file) => {
+    const path = deleteFileServer(file);
+    fileBuffer.close(path);
+    Action.readProjectFiles();
+}
 
 export const triggerNewFile = (path = '') => {
     if (!path) {

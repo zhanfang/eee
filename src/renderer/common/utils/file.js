@@ -57,9 +57,42 @@ const readFile = (path) => {
         
         return result;
     } catch(e) {
-        onError(ws, e.message);
+        logger(e);
     }
 };
 
+const createFile = (payload) => {
+    try {
+        const path = payload.path;
+        if (fs.existsSync(path)) throw new Error('A file with this name already exists.');
+        const content = '';
+        fs.appendFileSync(path, content);
+        const result = {
+            name: path.split('/').pop(),
+            path,
+            content,
+            type: mime.lookup(path)
+        };
 
-export {readProjectFilesServer, readFile};
+        logger("createFile", path, result);
+        
+        return result;
+    } catch (e) {
+        logger(e);
+    }
+};
+
+const deleteFileServer = (payload) => {
+    try {
+        const { path } = payload;
+        if (!checkPath(path).isFile()) throw new Error('The given path does not exist.');
+        fs.unlinkSync(path);
+
+        logger('deleteFileServer', path);
+        return path;
+    } catch (e) {
+        logger(e);
+    }
+};
+
+export {readProjectFilesServer, readFile, createFile, deleteFileServer};
