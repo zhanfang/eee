@@ -32,11 +32,13 @@ export const readProjectFiles = () => {
 }
 
 export const loadFile = ({ path }) => {
-    const file = (fileBuffer.exists(path)) 
-        ? Action.viewCode(path)
-        : readFile(path);
-    fileBuffer.addToBuffer(file);
-    Action.viewCode(file.path);
+    if (fileBuffer.exists(path)) {
+        Action.viewCode(path)
+    } else {
+        const file = readFile(path);;
+        fileBuffer.addToBuffer(file);
+        Action.viewCode(file.path);
+    }
 }
 
 export const closeFile = (filePath) => {
