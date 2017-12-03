@@ -39,6 +39,10 @@ export default class Editor extends React.Component {
         Action.setLayout();
     }
 
+    onClickTab = (item) => {
+        Action.viewCode(item.path);
+    }
+
     renderOpenedFileTabs() {
         const { fileBuffer } = this.props;
         if (fileBuffer.fileStates.length === 0) return null;
@@ -54,7 +58,9 @@ export default class Editor extends React.Component {
             <div className="Editor" ref="editor">
                 <div className="editorView">
                     {this.renderOpenedFileTabs()}
-                    <TextEditor ref={Action.setEditorHandler} {...this.state} ></TextEditor>
+                    <TextEditor 
+                        ref={Action.setEditorHandler} {...this.state} >
+                    </TextEditor>
                 </div>
             </div>
         );

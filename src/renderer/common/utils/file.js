@@ -85,7 +85,7 @@ const createFile = (payload) => {
 
 const updateFileServer = (payload) => {
     try {
-        const { content, path } = payload.file;
+        const { content, path } = payload;
         
         if (!checkPath(path).isFile()) throw new Error('The given path is not a file.');
         
@@ -114,7 +114,7 @@ const deleteFileServer = (payload) => {
 
 const createDirectoryServer = (payload) => {
     try {
-        const { path } = payload.directory;
+        const path = payload.directory;
 
         if (fs.existsSync(path)) throw new Error('A directory with this name already exists.');
         fs.mkdirSync(path);
@@ -125,8 +125,8 @@ const createDirectoryServer = (payload) => {
             files: [],
             folders: []
         };
-
         logger('createDirectoryServer', result);
+
         return result;
     } catch (e) {
         logger(e)

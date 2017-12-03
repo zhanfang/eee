@@ -83,7 +83,7 @@ export const triggerNewFile = (path = '') => {
 };
 
 export const createNewDirectory = (path) => {
-    createDirectoryServer({ path });
+    createDirectoryServer({directory: path});
     Action.readProjectFiles();
 }
 
@@ -96,7 +96,7 @@ export const triggerNewDirectory = (path = '') => {
             path = path.join('/');
         }
     }
-    fileTreeHandler.createNewElement(path);
+    fileTreeHandler.createNewElement(path, 'newdirectory');
 };
 
 export const deleteDirectory = (directory) => {

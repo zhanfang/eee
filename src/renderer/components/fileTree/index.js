@@ -81,7 +81,6 @@ export default class FileTree extends React.Component {
 
     renderFileTree(visible) {
         const { files, folders } = this.state;
-        console.log(this.state);
         return (
             <div className={`rootContent subnodes no-padding ${visible && 'visible'}`}>
                 {[].concat(folders.map(this.renderFolder)).concat(files.map(this.renderFile))}

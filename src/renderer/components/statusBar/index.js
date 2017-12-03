@@ -5,7 +5,7 @@ export default (props) => (
     <div className="StatusBar">
         <div className="left" />
         <div className="right">
-            <a href="https://github.com/fmsouza/monaco-web-ide" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/zhanfang/eee" target="_blank" rel="noopener noreferrer">
                 Github
             </a>
         </div>

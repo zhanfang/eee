@@ -3468,6 +3468,10 @@ keyboardevents-areequal@^0.2.1:
   version "0.2.2"
   resolved "http://registry.npm.taobao.org/keyboardevents-areequal/download/keyboardevents-areequal-0.2.2.tgz#88191ec738ce9f7591c25e9056de928b40277194"
 
+keyboardjs@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/keyboardjs/-/keyboardjs-2.4.1.tgz#7c5ad28695a21b6c4d066681c127376a60f9acd1"
+
 kind-of@^2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/kind-of/download/kind-of-2.0.1.tgz#018ec7a4ce7e3a86cb9141be519d24c8faa981b5"
